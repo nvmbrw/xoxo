@@ -62,6 +62,18 @@ function streak(board, firstCoord, ...remainingCoords) {
   return value
 }
 
+const COORDS = [
+  [0, 0],
+  [0, 1],
+  [0, 2],
+  [1, 0],
+  [1, 1],
+  [1, 2],
+  [2, 0],
+  [2, 1],
+  [2, 2],
+]
+
 export function winner(board) {
   for (let i = 0; i < 3; i++) {
     let strk = streak(board, [i, 0], [i, 1], [i, 2])

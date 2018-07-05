@@ -4,7 +4,6 @@ import gameReducer, { move } from './game'
 import { createStore } from 'redux'
 
 const game = createStore(gameReducer)
-
 const printBoard = () => {
   const { board } = game.getState()
   for (let r = 0; r != 3; ++r) {
@@ -50,3 +49,4 @@ game.subscribe(() => {
 // We dispatch a dummy START action to call all our
 // subscribers the first time.
 game.dispatch({ type: 'START' })
+
