@@ -36,8 +36,11 @@ game.subscribe(printBoard)
 game.subscribe(getInput('X'))
 game.subscribe(getInput('O'))
 game.subscribe(() => {
-  if (game.getState().winner) {
-    process.stdout.write(`\n${game.getState().winner} has won!\n`)
+  const theWinner = game.getState().winner
+  if (theWinner) {
+    theWinner === 'draw'
+      ? process.stdout.write("It's a draw!")
+      : process.stdout.write(`\n${theWinner} has won!\n`)
     process.exit(0)
   }
 })
@@ -49,4 +52,3 @@ game.subscribe(() => {
 // We dispatch a dummy START action to call all our
 // subscribers the first time.
 game.dispatch({ type: 'START' })
-

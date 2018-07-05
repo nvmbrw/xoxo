@@ -1,9 +1,19 @@
 import { Map } from 'immutable'
 
 const MOVE = 'MOVE'
+const COORDS = [
+  [0, 0],
+  [0, 1],
+  [0, 2],
+  [1, 0],
+  [1, 1],
+  [1, 2],
+  [2, 0],
+  [2, 1],
+  [2, 2],
+]
 
 const bad = (state, action) => {
-  //console.log(typeof action.position[0])
   if (action.player !== state.turn) {
     return `${action.player}, it's not your turn!`
   } else if (
@@ -35,13 +45,19 @@ const boardReducer = (board = Map(), action) => {
 
 export default function reducer(prevState = {}, action) {
   if (action.player) {
-    console.log(action.position[0], typeof action.position[0])
     const error = bad(prevState, action)
     if (error) return Object.assign({}, prevState, { error })
   }
 
   const nextBoard = boardReducer(prevState.board, action)
-  const winnerState = winner(nextBoard)
+  let winnerState = winner(nextBoard)
+  if (
+    !winnerState &&
+    COORDS.filter(coord => !typeof nextBoard.getIn(coord) === 'string').length
+  )
+    console.log(nextBoard)
+  winnerState = 'draw'
+
   return {
     board: nextBoard,
     turn: turnReducer(prevState.turn, action),
@@ -61,18 +77,6 @@ function streak(board, firstCoord, ...remainingCoords) {
   }
   return value
 }
-
-const COORDS = [
-  [0, 0],
-  [0, 1],
-  [0, 2],
-  [1, 0],
-  [1, 1],
-  [1, 2],
-  [2, 0],
-  [2, 1],
-  [2, 2],
-]
 
 export function winner(board) {
   for (let i = 0; i < 3; i++) {
