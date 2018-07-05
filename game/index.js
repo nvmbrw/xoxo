@@ -51,12 +51,10 @@ export default function reducer(prevState = {}, action) {
 
   const nextBoard = boardReducer(prevState.board, action)
   let winnerState = winner(nextBoard)
-  if (
-    !winnerState &&
-    COORDS.filter(coord => !typeof nextBoard.getIn(coord) === 'string').length
+  const boardFull = COORDS.map(coord => typeof nextBoard.getIn(coord)).every(
+    type => type === 'string'
   )
-    console.log(nextBoard)
-  winnerState = 'draw'
+  if (!winnerState && boardFull) winnerState = 'draw'
 
   return {
     board: nextBoard,
